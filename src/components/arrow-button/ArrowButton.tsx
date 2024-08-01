@@ -23,7 +23,6 @@ export const ArrowButton = ({
 		: 'Открыть форму параметров статьи';
 
 	return (
-		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */
 		<div
 			role='button'
 			aria-label={ariaLabel}

@@ -1,7 +1,7 @@
 import { OptionType } from 'src/constants/articleProps';
 import { Text } from 'components/text';
 import { Option } from './Option';
-
+import { useState, useEffect } from 'react';
 import styles from './RadioGroup.module.scss';
 
 type RadioGroupProps = {
@@ -14,8 +14,16 @@ type RadioGroupProps = {
 
 export const RadioGroup = (props: RadioGroupProps) => {
 	const { name, options, selected, onChange, title } = props;
-
-	const handleChange = (option: OptionType) => onChange?.(option);
+	const [selectedOption, setSelectedOption] = useState<OptionType>(
+		selected as OptionType
+	);
+	useEffect(() => {
+		setSelectedOption(selected as OptionType);
+	}, [selected]);
+	const handleChange = (option: OptionType) => {
+		setSelectedOption(option);
+		onChange?.(option);
+	};
 
 	return (
 		<div className={styles.container}>
@@ -33,7 +41,7 @@ export const RadioGroup = (props: RadioGroupProps) => {
 						groupName={name}
 						value={option.value}
 						title={option.title}
-						selected={selected}
+						selected={selectedOption}
 						onChange={() => handleChange(option)}
 						option={option}
 					/>
