@@ -21,8 +21,10 @@ export const RadioGroup = (props: RadioGroupProps) => {
 		setSelectedOption(selected as OptionType);
 	}, [selected]);
 	const handleChange = (option: OptionType) => {
-		setSelectedOption(option);
-		onChange?.(option);
+		if (JSON.stringify(option) !== JSON.stringify(selectedOption)) {
+			setSelectedOption(option);
+			onChange?.(option);
+		}
 	};
 
 	return (

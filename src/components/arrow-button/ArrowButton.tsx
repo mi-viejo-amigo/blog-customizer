@@ -7,18 +7,18 @@ export type OnClick = () => void;
 
 export const ArrowButton = ({
 	onClick,
-	isOpen,
+	isOpen: isMenuOpen,
 }: {
 	onClick: OnClick;
 	isOpen: boolean;
 }) => {
 	const classesContainer = clsx(
-		isOpen && styles.container_open,
+		isMenuOpen && styles.container_open,
 		styles.container
 	);
-	const classesArrow = clsx(isOpen && styles.arrow_open, styles.arrow);
+	const classesArrow = clsx(isMenuOpen && styles.arrow_open, styles.arrow);
 
-	const ariaLabel = isOpen
+	const ariaLabel = isMenuOpen
 		? 'Закрыть форму параметров статьи'
 		: 'Открыть форму параметров статьи';
 

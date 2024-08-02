@@ -12,7 +12,8 @@ import {
 	fontFamilyOptions,
 	fontSizeOptions,
 } from 'src/constants/articleProps';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
+import { useClose } from './hooks/useClose';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 
@@ -25,26 +26,18 @@ export const ArticleParamsForm = ({
 	hendleArticleStateChange,
 	articleState,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isMenuOpen, setisMenuOpen] = useState<boolean>(false);
+	// Стэйт данных по умолчанию, для ресета.
 	const defaultArticleStateRef = useRef<ArticleStateType>(articleState);
 	// Стэйт данных который копит все изменения и применяется только при сабмите
 	const [selectedStates, setSelectedStates] =
 		useState<ArticleStateType>(articleState);
-	const asideRef = useRef<HTMLElement>(null);
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			const { target } = event;
-			if (asideRef.current && !asideRef.current.contains(target as Node)) {
-				setIsOpen(false);
-			}
-		};
-		if (isOpen) {
-			window.addEventListener('mousedown', handleClickOutside);
-		} else {
-			window.removeEventListener('mousedown', handleClickOutside);
-		}
-		return () => window.removeEventListener('mousedown', handleClickOutside);
-	}, [isOpen]);
+	const formRef = useRef<HTMLFormElement>(null);
+	useClose({
+		isOpen: isMenuOpen,
+		onClose: () => setisMenuOpen(false),
+		rootRef: formRef,
+	});
 
 	const hendleSelectChange = <K extends keyof ArticleStateType>(
 		key: K,
@@ -57,10 +50,13 @@ export const ArticleParamsForm = ({
 	};
 
 	const handleClick = () => {
-		setIsOpen((prev) => !prev);
+		setisMenuOpen((prev) => !prev);
 	};
 
-	const classesAside = clsx(isOpen && styles.container_open, styles.container);
+	const classesAside = clsx(
+		isMenuOpen && styles.container_open,
+		styles.container
+	);
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -78,10 +74,11 @@ export const ArticleParamsForm = ({
 
 	return (
 		<>
-			<ArrowButton onClick={handleClick} isOpen={isOpen} />
-			<aside className={classesAside} ref={asideRef}>
+			<ArrowButton onClick={handleClick} isOpen={isMenuOpen} />
+			<aside className={classesAside}>
 				<form
 					className={styles.form}
+					ref={formRef}
 					onSubmit={handleSubmit}
 					onReset={handleReset}>
 					<Select
