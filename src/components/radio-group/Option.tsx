@@ -14,17 +14,23 @@ type OptionProps = {
 	option: OptionType;
 };
 
-export const Option = (props: OptionProps) => {
-	const { value, title, selected, groupName, onChange, option } = props;
-
+export const Option = ({
+	value,
+	title,
+	selected,
+	groupName,
+	onChange,
+	option,
+}: OptionProps) => {
 	const optionRef = useRef<HTMLDivElement>(null);
-
-	const handleChange = () => onChange?.(option);
+	const handleChange = () => {
+		onChange?.(option);
+	};
 
 	useEnterSubmit({ onChange, option });
 
 	const inputId = `${groupName}_radio_item_with_value__${value}`;
-	const isChecked = value === selected.title;
+	const isChecked = value === selected.value;
 
 	return (
 		<div

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import type { MouseEventHandler } from 'react';
 import clsx from 'clsx';
 import { OptionType } from 'src/constants/articleProps';
@@ -25,6 +25,12 @@ export const Select = (props: SelectProps) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const rootRef = useRef<HTMLDivElement>(null);
 	const placeholderRef = useRef<HTMLDivElement>(null);
+	const [selectedOption, setSelectedOption] = useState<OptionType>(
+		selected as OptionType
+	);
+	useLayoutEffect(() => {
+		setSelectedOption(selected as OptionType);
+	}, [selected]);
 
 	useOutsideClickClose({
 		isOpen,
@@ -41,6 +47,7 @@ export const Select = (props: SelectProps) => {
 	const handleOptionClick = (option: OptionType) => {
 		setIsOpen(false);
 		onChange?.(option);
+		setSelectedOption(option);
 	};
 	const handlePlaceHolderClick: MouseEventHandler<HTMLDivElement> = () => {
 		setIsOpen((isOpen) => !isOpen);
@@ -68,27 +75,27 @@ export const Select = (props: SelectProps) => {
 				<div
 					className={clsx(
 						styles.placeholder,
-						styles[selected?.optionClassName || '']
+						styles[selectedOption?.optionClassName || '']
 					)}
 					data-status={status}
-					data-selected={!!selected?.value}
+					data-selected={!!selectedOption?.value}
 					onClick={handlePlaceHolderClick}
 					role='button'
 					tabIndex={0}
 					ref={placeholderRef}>
 					<Text
 						family={
-							isFontFamilyClass(selected?.className)
-								? selected?.className
+							isFontFamilyClass(selectedOption?.className)
+								? selectedOption?.className
 								: undefined
 						}>
-						{selected?.title || placeholder}
+						{selectedOption?.title || placeholder}
 					</Text>
 				</div>
 				{isOpen && (
 					<ul className={styles.select} data-testid='selectDropdown'>
 						{options
-							.filter((option) => selected?.value !== option.value)
+							.filter((option) => selectedOption?.value !== option.value)
 							.map((option) => (
 								<Option
 									key={option.value}
