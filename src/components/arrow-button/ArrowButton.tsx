@@ -17,11 +17,9 @@ export const ArrowButton = ({
 		styles.container
 	);
 	const classesArrow = clsx(isMenuOpen && styles.arrow_open, styles.arrow);
-
 	const ariaLabel = isMenuOpen
 		? 'Закрыть форму параметров статьи'
 		: 'Открыть форму параметров статьи';
-
 	return (
 		<div
 			role='button'

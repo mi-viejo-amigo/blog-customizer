@@ -68,8 +68,7 @@
 		"test": "npm run stylelint:fix && npm run lint && npm run format",
 		"prepare": "husky install",
 		"commit": "npm run test && cz",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"storybook": "storybook dev -p 6006"
 	},
 	"eslintConfig": {
 		"extends": [

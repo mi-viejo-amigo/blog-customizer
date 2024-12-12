@@ -35,7 +35,7 @@ export const ArticleParamsForm = ({
 	const formRef = useRef<HTMLFormElement>(null);
 	useClose({
 		isOpen: isMenuOpen,
-		onClose: () => setisMenuOpen(false),
+		onClose: () => setisMenuOpen((prev) => !prev),
 		rootRef: formRef,
 	});
 
